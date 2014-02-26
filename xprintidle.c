@@ -40,7 +40,7 @@ unsigned long workaroundCreepyXServer(Display *dpy, unsigned long _idleTime );
 
 int main(int argc, char *argv[])
 {
-  XScreenSaverInfo ssi;
+  XScreenSaverInfo *ssi;
   Display *dpy;
   int event_basep, error_basep;
 
@@ -59,14 +59,21 @@ int main(int argc, char *argv[])
     fprintf(stderr, "screen saver extension not supported\n");
     return 1;
   }
+
+  ssi = XScreenSaverAllocInfo();
+  if (ssi == NULL) {
+    fprintf(stderr, "couldn't allocate screen saver info\n");
+    return 1;
+  }   
   
-  if (!XScreenSaverQueryInfo(dpy, DefaultRootWindow(dpy), &ssi)) {
+  if (!XScreenSaverQueryInfo(dpy, DefaultRootWindow(dpy), ssi)) {
     fprintf(stderr, "couldn't query screen saver info\n");
     return 1;
   }
   
-  printf("%lu\n", workaroundCreepyXServer(dpy, ssi.idle));
-  
+  printf("%lu\n", workaroundCreepyXServer(dpy, ssi->idle));
+
+  XFree(ssi);
   XCloseDisplay(dpy);
   return 0;
 }
