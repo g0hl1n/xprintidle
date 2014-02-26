@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.62)
-AC_INIT([xprintidle], [0.2], [henoch@dtek.chalmers.se])
+AC_INIT([xprintidle], [0.2.1], [richard.leitner@skidata.com])
 AM_INIT_AUTOMAKE([dist-bzip2 -Wall])
 AC_CONFIG_SRCDIR([xprintidle.c])
 
