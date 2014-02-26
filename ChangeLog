@@ -1,0 +1,12 @@
+2008-10-14  Magnus Henoch  <mange@freemail.hu>
+
+	* xprintidle.c: Update copyright notice.
+	(workaroundCreepyXServer): New function, written for kpowersave by
+	Danny Kukawka, adapted for xprintidle by Eivind Magnus Hvidevold.
+	(main): Use it.
+	* COPYING: Now GNU GPL 2 instead of 3-clause BSD.
+
+	* configure.ac: New file.
+
+	* Makefile.am: New file.
+
