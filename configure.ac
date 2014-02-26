@@ -3,7 +3,7 @@
 
 AC_PREREQ(2.62)
 AC_INIT([xprintidle], [0.2], [henoch@dtek.chalmers.se])
-AM_INIT_AUTOMAKE([dist-bzip2 dist-lzma -Wall])
+AM_INIT_AUTOMAKE([dist-bzip2 -Wall])
 AC_CONFIG_SRCDIR([xprintidle.c])
 
 # Checks for programs.
