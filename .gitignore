@@ -1,0 +1,10 @@
+# Automake/conf stuff
+autom4te.cache/
+.deps/
+config.log
+config.status
+Makefile
+
+# C stuff
+*.o
+*.out
