@@ -1,3 +1,6 @@
+xprintidle 0.2.2:
+  Added new patches from debian version 0.2-10. This fixes some build problems.
+
 xprintidle 0.2.1:
   Fixed some build problems on new(er) systems
 
