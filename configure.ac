@@ -20,7 +20,9 @@ AC_SUBST([x_libraries])
 
 # Checks for libraries.
 user_LIBS=$LIBS
-LIBS="$LIBS -L$x_libraries"
+if [ "$x_libraries" ] ; then
+  LIBS="$LIBS -L$x_libraries"
+fi
 AC_CHECK_LIB([X11], [XOpenDisplay], , [AC_MSG_ERROR([libX11 not found])])
 AC_CHECK_LIB([Xss], [XScreenSaverQueryExtension], , [AC_MSG_ERROR([libXss not found])])
 LIBS=$user_LIBS
