@@ -1,3 +1,6 @@
+2017-08-25  Richard Leitner  <richard.leitner@skidata.com>
+	* Add latest patches from debian version 0.2-10
+
 2014-02-26  Richard Leitner  <richard.leitner@skidata.com>
 	* configure.ac: fix library checking
 
