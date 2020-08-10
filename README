@@ -1,9 +1,8 @@
 xprintidle is a utility that queries the X server for the user's idle
 time and prints it to stdout (in milliseconds).
 
-Basically, type "./configure && make && sudo make install" to compile
-and install the program.  See the INSTALL file for more detailed
-instructions.
+Basically, type "meson build && ninja -C build install" to compile
+and install the program.
 
 You need the development files for the Xss library.  In Debian, they
 are in the package 'libxss-dev' or 'xlibs-static-dev', depending on
