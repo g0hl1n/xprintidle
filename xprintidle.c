@@ -35,7 +35,7 @@
 #include <stdio.h>
 
 void usage(char *name);
-unsigned long workaroundCreepyXServer(Display *dpy, unsigned long _idleTime);
+unsigned long workaroundCreepyXServer(Display *dpy, unsigned long idleTime);
 
 int main(int argc, char *argv[]) {
   XScreenSaverInfo *ssi;
@@ -98,7 +98,7 @@ void usage(char *name) {
  *             current timeout for this state and add this value to
  *             the current idle time and return.
  */
-unsigned long workaroundCreepyXServer(Display *dpy, unsigned long _idleTime) {
+unsigned long workaroundCreepyXServer(Display *dpy, unsigned long idleTime) {
   int dummy;
   CARD16 standby, suspend, off;
   CARD16 state;
@@ -113,16 +113,16 @@ unsigned long workaroundCreepyXServer(Display *dpy, unsigned long _idleTime) {
         switch (state) {
         case DPMSModeStandby:
           /* this check is a little bit paranoid, but be sure */
-          if (_idleTime < (unsigned)(standby * 1000))
-            _idleTime += (standby * 1000);
+          if (idleTime < (unsigned)(standby * 1000))
+            idleTime += (standby * 1000);
           break;
         case DPMSModeSuspend:
-          if (_idleTime < (unsigned)((suspend + standby) * 1000))
-            _idleTime += ((suspend + standby) * 1000);
+          if (idleTime < (unsigned)((suspend + standby) * 1000))
+            idleTime += ((suspend + standby) * 1000);
           break;
         case DPMSModeOff:
-          if (_idleTime < (unsigned)((off + suspend + standby) * 1000))
-            _idleTime += ((off + suspend + standby) * 1000);
+          if (idleTime < (unsigned)((off + suspend + standby) * 1000))
+            idleTime += ((off + suspend + standby) * 1000);
           break;
         case DPMSModeOn:
         default:
@@ -132,5 +132,5 @@ unsigned long workaroundCreepyXServer(Display *dpy, unsigned long _idleTime) {
     }
   }
 
-  return _idleTime;
+  return idleTime;
 }
