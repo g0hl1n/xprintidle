@@ -1,33 +1,31 @@
-/*
-
-This program prints the "idle time" of the user to stdout.  The "idle
-time" is the number of milliseconds since input was received on any
-input device.  If unsuccessful, the program prints a message to stderr
-and exits with a non-zero exit code.
-
-Copyright (c) 2005, 2008 Magnus Henoch <henoch@dtek.chalmers.se>
-Copyright (c) 2006, 2007 by Danny Kukawka
-                         <dkukawka@suse.de>, <danny.kukawka@web.de>
-Copyright (c) 2008 Eivind Magnus Hvidevold <hvidevold@gmail.com>
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of version 2 of the GNU General Public License
-as published by the Free Software Foundation.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the
-Free Software Foundation, Inc.,
-51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-
-The function workaroundCreepyXServer was adapted from kpowersave-0.7.3 by
-Eivind Magnus Hvidevold <hvidevold@gmail.com>. kpowersave is licensed under
-the GNU GPL, version 2 _only_.
-
+/* SPDX-License-Identifier: GPL-2.0-only
+ *
+ * This program prints the "idle time" of the user to stdout.  The "idle time"
+ * is the number of milliseconds since input was received on any input device.
+ * If unsuccessful, the program prints a message to stderr and exits with a
+ * non-zero exit code.
+ *
+ * Copyright (c) 2005, 2008 Magnus Henoch <henoch@dtek.chalmers.se>
+ * Copyright (c) 2006, 2007 by Danny Kukawka <dkukawka@suse.de>, <danny.kukawka@web.de>
+ * Copyright (c) 2008 Eivind Magnus Hvidevold <hvidevold@gmail.com>
+ * Copyright (c) 2014-2020 Richard Leitner <dev@g0hl1n.net>
+ *
+ * This file is part of xprintidle.
+ *
+ * xprintidle is free software; you can redistribute it and/or modify it under
+ * the terms of version 2 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * xprintidle is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * xprintidle. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * The function workaroundCreepyXServer was adapted from kpowersave-0.7.3 by
+ * Eivind Magnus Hvidevold <hvidevold@gmail.com>. kpowersave is licensed under
+ * the GNU GPL, version 2 _only_.
 */
 
 #include <X11/Xlib.h>
@@ -88,7 +86,7 @@ void usage(char *name)
 	  name);
 }
 
-/*!
+/*
  * This function works around an XServer idleTime bug in the
  * XScreenSaverExtension if dpms is running. In this case the current
  * dpms-state time is always subtracted from the current idletime.
@@ -100,10 +98,6 @@ void usage(char *name)
  * Workaround: Check if if XServer is in a dpms state, check the 
  *             current timeout for this state and add this value to 
  *             the current idle time and return.
- *
- * \param _idleTime a unsigned long value with the current idletime from
- *                  XScreenSaverInfo->idle
- * \return a unsigned long with the corrected idletime
  */
 unsigned long workaroundCreepyXServer(Display *dpy, unsigned long _idleTime ){
   int dummy;
