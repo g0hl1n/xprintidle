@@ -90,7 +90,7 @@ void usage(char *name) {
  * XScreenSaverExtension if dpms is running. In this case the current
  * dpms-state time is always subtracted from the current idletime.
  * This means: XScreenSaverInfo->idle is not the time since the last
- * user activity, as descriped in the header file of the extension.
+ * user activity, as described in the header file of the extension.
  * This result in SUSE bug # and sf.net bug #. The bug in the XServer itself
  * is reported at https://bugs.freedesktop.org/buglist.cgi?quicksearch=6439.
  *
@@ -112,7 +112,7 @@ unsigned long workaroundCreepyXServer(Display *dpy, unsigned long _idleTime) {
       if (onoff) {
         switch (state) {
         case DPMSModeStandby:
-          /* this check is a littlebit paranoid, but be sure */
+          /* this check is a little bit paranoid, but be sure */
           if (_idleTime < (unsigned)(standby * 1000))
             _idleTime += (standby * 1000);
           break;
