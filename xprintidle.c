@@ -40,7 +40,8 @@ unsigned long workaroundCreepyXServer(Display *dpy, unsigned long idleTime);
 int main(int argc, char *argv[]) {
   XScreenSaverInfo *ssi;
   Display *dpy;
-  int event_basep, error_basep;
+  int event_basep, error_basep, vendrel;
+  unsigned long idle;
 
   if (argc != 1) {
     usage(argv[0]);
@@ -69,7 +70,18 @@ int main(int argc, char *argv[]) {
     return 1;
   }
 
-  printf("%lu\n", workaroundCreepyXServer(dpy, ssi->idle));
+  /* xorg fixed the reset of the idle time in some (unknown) release. We now it
+   * is fixed in v1.20.00, therefore don't do the workaround for this version.
+   * If anybody finds the commit and therefore xorg release which fixes this
+   * issue please send a patch or raise an issue ;-) */
+  vendrel = VendorRelease(dpy);
+  if (vendrel < 12000000) {
+    idle = workaroundCreepyXServer(dpy, ssi->idle);
+  } else {
+    idle = ssi->idle;
+  }
+
+  printf("%lu\n", idle);
 
   XFree(ssi);
   XCloseDisplay(dpy);
