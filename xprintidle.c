@@ -41,6 +41,13 @@
 #define XPRINTIDLE_VERSION "n/a"
 #endif
 
+/* macros for cmocka unit testing */
+#ifdef TESTING
+#define WEAK_FOR_TEST __attribute__((weak))
+#else
+#define WEAK_FOR_TEST
+#endif
+
 unsigned long workaroundCreepyXServer(Display *dpy, unsigned long idleTime);
 
 void print_usage(char *name) {
