@@ -32,6 +32,7 @@
 #include <X11/Xlib.h>
 #include <X11/extensions/dpms.h>
 #include <X11/extensions/scrnsaver.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -60,11 +61,59 @@ void print_version() {
   fprintf(stdout, "xprintidle %s\n", XPRINTIDLE_VERSION);
 }
 
-int main(int argc, char *argv[]) {
+/*
+ * This function gets the X idle time in milliseconds and writes it to the
+ * "idle" argument.
+ * On success 0 is returned.
+ * On error -1 is returned.
+ */
+int get_x_idletime(uint64_t *idle)
+{
   XScreenSaverInfo *ssi;
   Display *dpy;
   int event_basep, error_basep, vendrel;
-  unsigned long idle;
+
+  dpy = XOpenDisplay(NULL);
+  if (dpy == NULL) {
+    fprintf(stderr, "couldn't open display\n");
+    return -1;
+  }
+
+  if (!XScreenSaverQueryExtension(dpy, &event_basep, &error_basep)) {
+    fprintf(stderr, "screen saver extension not supported\n");
+    return -1;
+  }
+
+  ssi = XScreenSaverAllocInfo();
+  if (ssi == NULL) {
+    fprintf(stderr, "couldn't allocate screen saver info\n");
+    return -1;
+  }
+
+  if (!XScreenSaverQueryInfo(dpy, DefaultRootWindow(dpy), ssi)) {
+    fprintf(stderr, "couldn't query screen saver info\n");
+    return -1;
+  }
+
+  /* xorg fixed the reset of the idle time in some (unknown) release. We now it
+   * is fixed in v1.20.00, therefore don't do the workaround for this version.
+   * If anybody finds the commit and therefore xorg release which fixes this
+   * issue please send a patch or raise an issue ;-) */
+  vendrel = VendorRelease(dpy);
+  if (vendrel < 12000000) {
+    *idle = workaroundCreepyXServer(dpy, ssi->idle);
+  } else {
+    *idle = ssi->idle;
+  }
+
+  XFree(ssi);
+  XCloseDisplay(dpy);
+
+  return 0;
+}
+
+int main(int argc, char *argv[]) {
+  uint64_t idle;
 
   /* TODO change this to getopts as soon as we have more options */
   if (argc != 1) {
@@ -76,43 +125,12 @@ int main(int argc, char *argv[]) {
     return 1;
   }
 
-  dpy = XOpenDisplay(NULL);
-  if (dpy == NULL) {
-    fprintf(stderr, "couldn't open display\n");
+  if (get_x_idletime(&idle) < 0) {
     return 1;
-  }
-
-  if (!XScreenSaverQueryExtension(dpy, &event_basep, &error_basep)) {
-    fprintf(stderr, "screen saver extension not supported\n");
-    return 1;
-  }
-
-  ssi = XScreenSaverAllocInfo();
-  if (ssi == NULL) {
-    fprintf(stderr, "couldn't allocate screen saver info\n");
-    return 1;
-  }
-
-  if (!XScreenSaverQueryInfo(dpy, DefaultRootWindow(dpy), ssi)) {
-    fprintf(stderr, "couldn't query screen saver info\n");
-    return 1;
-  }
-
-  /* xorg fixed the reset of the idle time in some (unknown) release. We now it
-   * is fixed in v1.20.00, therefore don't do the workaround for this version.
-   * If anybody finds the commit and therefore xorg release which fixes this
-   * issue please send a patch or raise an issue ;-) */
-  vendrel = VendorRelease(dpy);
-  if (vendrel < 12000000) {
-    idle = workaroundCreepyXServer(dpy, ssi->idle);
-  } else {
-    idle = ssi->idle;
   }
 
   printf("%lu\n", idle);
 
-  XFree(ssi);
-  XCloseDisplay(dpy);
   return 0;
 }
 
