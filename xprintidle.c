@@ -34,6 +34,7 @@
 #include <X11/extensions/scrnsaver.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #ifndef XPRINTIDLE_VERSION
@@ -123,19 +124,18 @@ int main(int argc, char *argv[]) {
   if (argc != 1) {
     if (!strcmp(argv[1], "-v") || !strcmp(argv[1], "--version")) {
       print_version();
-      return 0;
+      return EXIT_SUCCESS;
     }
     print_usage(argv[0]);
-    return 1;
+    return EXIT_FAILURE;
   }
 
   if (get_x_idletime(&idle) < 0) {
-    return 1;
+    return EXIT_FAILURE;
   }
 
   printf("%lu\n", idle);
-
-  return 0;
+  return EXIT_SUCCESS;
 }
 
 /*
