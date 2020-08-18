@@ -81,17 +81,21 @@ int get_x_idletime(uint64_t *idle)
 
   if (!XScreenSaverQueryExtension(dpy, &event_basep, &error_basep)) {
     fprintf(stderr, "screen saver extension not supported\n");
+    XCloseDisplay(dpy);
     return -1;
   }
 
   ssi = XScreenSaverAllocInfo();
   if (ssi == NULL) {
     fprintf(stderr, "couldn't allocate screen saver info\n");
+    XCloseDisplay(dpy);
     return -1;
   }
 
   if (!XScreenSaverQueryInfo(dpy, DefaultRootWindow(dpy), ssi)) {
     fprintf(stderr, "couldn't query screen saver info\n");
+    XFree(ssi);
+    XCloseDisplay(dpy);
     return -1;
   }
 
