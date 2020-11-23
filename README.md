@@ -5,8 +5,12 @@ time and prints it to stdout (in milliseconds).
 
 ## Building and Installing ##
 
-Basically, type "meson build && ninja -C build install" to compile
-and install the program.
+Basically, use meson to compile and install the program:
+
+```
+meson build
+meson install -C build
+```
 
 ### Dependencies ###
 
