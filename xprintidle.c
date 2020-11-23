@@ -34,8 +34,16 @@
 #include <X11/extensions/scrnsaver.h>
 #include <stdio.h>
 
-void usage(char *name);
 unsigned long workaroundCreepyXServer(Display *dpy, unsigned long idleTime);
+
+void print_usage(char *name) {
+  fprintf(stdout,
+          "usage: %s\n"
+          "Query the X server for the user's idle time\n"
+          "\n"
+          "Report bugs at: https://github.com/g0hl1n/xprintidle/issues\n",
+          name);
+}
 
 int main(int argc, char *argv[]) {
   XScreenSaverInfo *ssi;
@@ -44,7 +52,7 @@ int main(int argc, char *argv[]) {
   unsigned long idle;
 
   if (argc != 1) {
-    usage(argv[0]);
+    print_usage(argv[0]);
     return 1;
   }
 
@@ -86,15 +94,6 @@ int main(int argc, char *argv[]) {
   XFree(ssi);
   XCloseDisplay(dpy);
   return 0;
-}
-
-void usage(char *name) {
-  fprintf(stderr,
-          "Usage:\n"
-          "%s\n"
-          "That is, no command line arguments.  The user's idle time\n"
-          "in milliseconds is printed on stdout.\n",
-          name);
 }
 
 /*
