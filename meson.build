@@ -8,6 +8,7 @@ project('xprintidle',
     'optimization=3',
   ]
 )
+add_project_arguments('-DXPRINTIDLE_VERSION="@0@"'.format(meson.project_version()), language : 'c')
 
 src = [
   'xprintidle.c',

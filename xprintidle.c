@@ -33,16 +33,31 @@
 #include <X11/extensions/dpms.h>
 #include <X11/extensions/scrnsaver.h>
 #include <stdio.h>
+#include <string.h>
+
+#ifndef XPRINTIDLE_VERSION
+#define XPRINTIDLE_VERSION "n/a"
+#endif
 
 unsigned long workaroundCreepyXServer(Display *dpy, unsigned long idleTime);
 
 void print_usage(char *name) {
   fprintf(stdout,
-          "usage: %s\n"
+          "usage: %s [OPTION]\n"
           "Query the X server for the user's idle time\n"
           "\n"
-          "Report bugs at: https://github.com/g0hl1n/xprintidle/issues\n",
+          "Options:\n"
+          "  -h, --help        Show this text\n"
+          "  -v, --version     Print the program version\n"
+          "\n"
+          "Report bugs at: https://github.com/g0hl1n/xprintidle/issues\n"
+          "Written by Magnus Henoch and others; see\n"
+          "https://github.com/g0hl1n/xprintidle/blob/master/AUTHORS\n",
           name);
+}
+
+void print_version() {
+  fprintf(stdout, "xprintidle %s\n", XPRINTIDLE_VERSION);
 }
 
 int main(int argc, char *argv[]) {
@@ -51,7 +66,12 @@ int main(int argc, char *argv[]) {
   int event_basep, error_basep, vendrel;
   unsigned long idle;
 
+  /* TODO change this to getopts as soon as we have more options */
   if (argc != 1) {
+    if (!strcmp(argv[1], "-v") || !strcmp(argv[1], "--version")) {
+      print_version();
+      return 0;
+    }
     print_usage(argv[0]);
     return 1;
   }
