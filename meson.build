@@ -25,3 +25,5 @@ executable('xprintidle',
   dependencies: dep,
   install : true,
 )
+
+install_man('xprintidle.1')
