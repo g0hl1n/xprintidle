@@ -27,3 +27,5 @@ executable('xprintidle',
 )
 
 install_man('xprintidle.1')
+
+subdir('test')
