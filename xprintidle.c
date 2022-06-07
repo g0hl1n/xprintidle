@@ -9,7 +9,7 @@
  * Copyright (c) 2006, 2007 by Danny Kukawka <dkukawka@suse.de>,
  *                                           <danny.kukawka@web.de>
  * Copyright (c) 2008 Eivind Magnus Hvidevold <hvidevold@gmail.com>
- * Copyright (c) 2014-2020 Richard Leitner <dev@g0hl1n.net>
+ * Copyright (c) 2014-2022 Richard Leitner <dev@g0hl1n.net>
  *
  * This file is part of xprintidle.
  *
