@@ -68,8 +68,7 @@ void print_version(void) {
  * On success 0 is returned.
  * On error -1 is returned.
  */
-int get_x_idletime(uint64_t *idle)
-{
+int get_x_idletime(uint64_t *idle) {
   XScreenSaverInfo *ssi;
   Display *dpy;
   int event_basep, error_basep, vendrel;
@@ -164,7 +163,7 @@ unsigned long workaroundCreepyXServer(Display *dpy, unsigned long idleTime) {
 
   DPMSGetTimeouts(dpy, &standby, &suspend, &off);
   DPMSInfo(dpy, &state, &onoff);
-  
+
   if (!onoff)
     return idleTime;
 
