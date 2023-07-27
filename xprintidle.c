@@ -58,7 +58,7 @@ void print_usage(char *name) {
           name);
 }
 
-void print_version() {
+void print_version(void) {
   fprintf(stdout, "xprintidle %s\n", XPRINTIDLE_VERSION);
 }
 
