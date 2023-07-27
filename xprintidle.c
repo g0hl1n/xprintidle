@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: GPL-2.0-only
  *
- * This program prints the "idle time" of the user to stdout.  The "idle time"
+ * This program prints the "idle time" of the user to stdout. The "idle time"
  * is the number of milliseconds since input was received on any input device.
  * If unsuccessful, the program prints a message to stderr and exits with a
  * non-zero exit code.
@@ -19,7 +19,7 @@
  *
  * xprintidle is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
- * A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License along with
  * xprintidle. If not, see <https://www.gnu.org/licenses/>.
