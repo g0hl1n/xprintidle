@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: GPL-2.0-only
  *
- * This program prints the "idle time" of the user to stdout.  The "idle time"
+ * This program prints the "idle time" of the user to stdout. The "idle time"
  * is the number of milliseconds since input was received on any input device.
  * If unsuccessful, the program prints a message to stderr and exits with a
  * non-zero exit code.
@@ -19,7 +19,7 @@
  *
  * xprintidle is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
- * A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License along with
  * xprintidle. If not, see <https://www.gnu.org/licenses/>.
@@ -58,7 +58,7 @@ void print_usage(char *name) {
           name);
 }
 
-void print_version() {
+void print_version(void) {
   fprintf(stdout, "xprintidle %s\n", XPRINTIDLE_VERSION);
 }
 
@@ -68,8 +68,7 @@ void print_version() {
  * On success 0 is returned.
  * On error -1 is returned.
  */
-int get_x_idletime(uint64_t *idle)
-{
+int get_x_idletime(uint64_t *idle) {
   XScreenSaverInfo *ssi;
   Display *dpy;
   int event_basep, error_basep, vendrel;
@@ -157,32 +156,34 @@ unsigned long workaroundCreepyXServer(Display *dpy, unsigned long idleTime) {
   CARD16 state;
   BOOL onoff;
 
-  if (DPMSQueryExtension(dpy, &dummy, &dummy)) {
-    if (DPMSCapable(dpy)) {
-      DPMSGetTimeouts(dpy, &standby, &suspend, &off);
-      DPMSInfo(dpy, &state, &onoff);
+  if (!DPMSQueryExtension(dpy, &dummy, &dummy))
+    return idleTime;
+  else if (!DPMSCapable(dpy))
+    return idleTime;
 
-      if (onoff) {
-        switch (state) {
-        case DPMSModeStandby:
-          /* this check is a little bit paranoid, but be sure */
-          if (idleTime < (unsigned)(standby * 1000))
-            idleTime += (standby * 1000);
-          break;
-        case DPMSModeSuspend:
-          if (idleTime < (unsigned)((suspend + standby) * 1000))
-            idleTime += ((suspend + standby) * 1000);
-          break;
-        case DPMSModeOff:
-          if (idleTime < (unsigned)((off + suspend + standby) * 1000))
-            idleTime += ((off + suspend + standby) * 1000);
-          break;
-        case DPMSModeOn:
-        default:
-          break;
-        }
-      }
-    }
+  DPMSGetTimeouts(dpy, &standby, &suspend, &off);
+  DPMSInfo(dpy, &state, &onoff);
+
+  if (!onoff)
+    return idleTime;
+
+  switch (state) {
+  case DPMSModeStandby:
+    /* this check is a little bit paranoid, but be sure */
+    if (idleTime < (unsigned)(standby * 1000))
+      idleTime += (standby * 1000);
+    break;
+  case DPMSModeSuspend:
+    if (idleTime < (unsigned)((suspend + standby) * 1000))
+      idleTime += ((suspend + standby) * 1000);
+    break;
+  case DPMSModeOff:
+    if (idleTime < (unsigned)((off + suspend + standby) * 1000))
+      idleTime += ((off + suspend + standby) * 1000);
+    break;
+  case DPMSModeOn:
+  default:
+    break;
   }
 
   return idleTime;
