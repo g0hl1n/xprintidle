@@ -157,32 +157,34 @@ unsigned long workaroundCreepyXServer(Display *dpy, unsigned long idleTime) {
   CARD16 state;
   BOOL onoff;
 
-  if (DPMSQueryExtension(dpy, &dummy, &dummy)) {
-    if (DPMSCapable(dpy)) {
-      DPMSGetTimeouts(dpy, &standby, &suspend, &off);
-      DPMSInfo(dpy, &state, &onoff);
+  if (!DPMSQueryExtension(dpy, &dummy, &dummy))
+    return idleTime;
+  else if (!DPMSCapable(dpy))
+    return idleTime;
 
-      if (onoff) {
-        switch (state) {
-        case DPMSModeStandby:
-          /* this check is a little bit paranoid, but be sure */
-          if (idleTime < (unsigned)(standby * 1000))
-            idleTime += (standby * 1000);
-          break;
-        case DPMSModeSuspend:
-          if (idleTime < (unsigned)((suspend + standby) * 1000))
-            idleTime += ((suspend + standby) * 1000);
-          break;
-        case DPMSModeOff:
-          if (idleTime < (unsigned)((off + suspend + standby) * 1000))
-            idleTime += ((off + suspend + standby) * 1000);
-          break;
-        case DPMSModeOn:
-        default:
-          break;
-        }
-      }
-    }
+  DPMSGetTimeouts(dpy, &standby, &suspend, &off);
+  DPMSInfo(dpy, &state, &onoff);
+  
+  if (!onoff)
+    return idleTime;
+
+  switch (state) {
+  case DPMSModeStandby:
+    /* this check is a little bit paranoid, but be sure */
+    if (idleTime < (unsigned)(standby * 1000))
+      idleTime += (standby * 1000);
+    break;
+  case DPMSModeSuspend:
+    if (idleTime < (unsigned)((suspend + standby) * 1000))
+      idleTime += ((suspend + standby) * 1000);
+    break;
+  case DPMSModeOff:
+    if (idleTime < (unsigned)((off + suspend + standby) * 1000))
+      idleTime += ((off + suspend + standby) * 1000);
+    break;
+  case DPMSModeOn:
+  default:
+    break;
   }
 
   return idleTime;
