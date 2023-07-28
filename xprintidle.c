@@ -116,21 +116,60 @@ int get_x_idletime(uint64_t *idle) {
   return 0;
 }
 
+/* This function prints miliseconds in a human-readable format. */
+void print_human_time(uint64_t time) {
+  /* The C standard says that integer division round towards 0. */
+
+  int days = (int)(time / (24 * 60 * 60 * 1000));
+  time %= 24 * 60 * 60 * 1000;
+  if (days)
+    printf("%d days ", days);
+
+  int hours = (int)(time / (60 * 60 * 1000));
+  time %= 60 * 60 * 1000;
+  if (hours)
+    printf("%d hours ", hours);
+
+  int mins = (int)(time / (60 * 1000));
+  time %= 60 * 1000;
+  if (mins)
+    printf("%d minutes ", mins);
+
+  int secs = (int)(time / 1000);
+  time %= 1000;
+  if (secs)
+    printf("%d seconds ", secs);
+
+  int ms = (int)(time % 1000);
+  printf("%d milliseconds", ms);
+
+  printf("\n");
+}
+
 int main(int argc, char *argv[]) {
   uint64_t idle;
+  int human = 0;
 
   /* TODO change this to getopts as soon as we have more options */
   if (argc != 1) {
     if (!strcmp(argv[1], "-v") || !strcmp(argv[1], "--version")) {
       print_version();
       return EXIT_SUCCESS;
+    } else if (strcmp(argv[1], "--human-readable")) {
+      print_usage(argv[0]);
+      return EXIT_FAILURE;
     }
-    print_usage(argv[0]);
-    return EXIT_FAILURE;
+
+    human = 1;
   }
 
   if (get_x_idletime(&idle) < 0) {
     return EXIT_FAILURE;
+  }
+
+  if (human) {
+    print_human_time(idle);
+    return EXIT_SUCCESS;
   }
 
   printf("%lu\n", idle);
