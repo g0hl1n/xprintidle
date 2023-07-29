@@ -120,28 +120,29 @@ int get_x_idletime(uint64_t *idle) {
 void print_human_time(uint64_t time) {
   /* The C standard says that integer division round towards 0. */
 
-  int days = (int)(time / (24 * 60 * 60 * 1000));
-  time %= 24 * 60 * 60 * 1000;
-  if (days)
-    printf("%d days ", days);
+  int convFacs[] = {24 * 60 * 60 * 1000, 60 * 60 * 1000, 60 * 1000, 1000, 1};
+  char *names[] = {"days", "hours", "minutes", "seconds", "milliseconds"};
+  size_t units = sizeof(convFacs) / sizeof(int);
 
-  int hours = (int)(time / (60 * 60 * 1000));
-  time %= 60 * 60 * 1000;
-  if (hours)
-    printf("%d hours ", hours);
+  int firstPrint = 1;
+  size_t i;
+  for (i = 0; i < units; i++) {
+    int unitMag = time / convFacs[i];
+    time %= convFacs[i];
 
-  int mins = (int)(time / (60 * 1000));
-  time %= 60 * 1000;
-  if (mins)
-    printf("%d minutes ", mins);
+    if (!unitMag)
+      continue;
 
-  int secs = (int)(time / 1000);
-  time %= 1000;
-  if (secs)
-    printf("%d seconds ", secs);
+    if (!firstPrint)
+      printf(", ");
+    printf("%d %s", unitMag, names[i]);
 
-  int ms = (int)(time % 1000);
-  printf("%d milliseconds", ms);
+    firstPrint = 0;
+  }
+
+  /* Smallest unit would be 0. */
+  if (firstPrint)
+    printf("0 %s", names[units - 1]);
 
   printf("\n");
 }
