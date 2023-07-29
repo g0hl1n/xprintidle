@@ -121,7 +121,7 @@ void print_human_time(uint64_t time) {
   /* The C standard says that integer division round towards 0. */
 
   int convFacs[] = {24 * 60 * 60 * 1000, 60 * 60 * 1000, 60 * 1000, 1000, 1};
-  char *names[] = {"days", "hours", "minutes", "seconds", "milliseconds"};
+  char *names[] = {"day", "hour", "minute", "second", "millisecond"};
   size_t units = sizeof(convFacs) / sizeof(int);
 
   int firstPrint = 1;
@@ -136,13 +136,15 @@ void print_human_time(uint64_t time) {
     if (!firstPrint)
       printf(", ");
     printf("%d %s", unitMag, names[i]);
+    if (unitMag != 1)
+      printf("s");
 
     firstPrint = 0;
   }
 
   /* Smallest unit would be 0. */
   if (firstPrint)
-    printf("0 %s", names[units - 1]);
+    printf("0 %ss", names[units - 1]);
 
   printf("\n");
 }
