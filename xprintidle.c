@@ -158,7 +158,7 @@ int main(int argc, char *argv[]) {
     if (!strcmp(argv[1], "-v") || !strcmp(argv[1], "--version")) {
       print_version();
       return EXIT_SUCCESS;
-    } else if (strcmp(argv[1], "--human-readable")) {
+    } else if (strcmp(argv[1], "-H") && strcmp(argv[1], "--human-readable")) {
       print_usage(argv[0]);
       return EXIT_FAILURE;
     }
