@@ -116,21 +116,63 @@ int get_x_idletime(uint64_t *idle) {
   return 0;
 }
 
+/* This function prints miliseconds in a human-readable format. */
+void print_human_time(uint64_t time) {
+  /* The C standard says that integer division round towards 0. */
+
+  int convFacs[] = {24 * 60 * 60 * 1000, 60 * 60 * 1000, 60 * 1000, 1000, 1};
+  char *names[] = {"day", "hour", "minute", "second", "millisecond"};
+  size_t units = sizeof(convFacs) / sizeof(int);
+
+  int firstPrint = 1;
+  size_t i;
+  for (i = 0; i < units; i++) {
+    int unitMag = time / convFacs[i];
+    time %= convFacs[i];
+
+    if (!unitMag)
+      continue;
+
+    if (!firstPrint)
+      printf(", ");
+    printf("%d %s", unitMag, names[i]);
+    if (unitMag != 1)
+      printf("s");
+
+    firstPrint = 0;
+  }
+
+  /* Smallest unit would be 0. */
+  if (firstPrint)
+    printf("0 %ss", names[units - 1]);
+
+  printf("\n");
+}
+
 int main(int argc, char *argv[]) {
   uint64_t idle;
+  int human = 0;
 
   /* TODO change this to getopts as soon as we have more options */
   if (argc != 1) {
     if (!strcmp(argv[1], "-v") || !strcmp(argv[1], "--version")) {
       print_version();
       return EXIT_SUCCESS;
+    } else if (strcmp(argv[1], "-H") && strcmp(argv[1], "--human-readable")) {
+      print_usage(argv[0]);
+      return EXIT_FAILURE;
     }
-    print_usage(argv[0]);
-    return EXIT_FAILURE;
+
+    human = 1;
   }
 
   if (get_x_idletime(&idle) < 0) {
     return EXIT_FAILURE;
+  }
+
+  if (human) {
+    print_human_time(idle);
+    return EXIT_SUCCESS;
   }
 
   printf("%lu\n", idle);
