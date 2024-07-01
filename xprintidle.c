@@ -49,8 +49,9 @@ void print_usage(char *name) {
           "Query the X server for the user's idle time\n"
           "\n"
           "Options:\n"
-          "  -h, --help        Show this text\n"
-          "  -v, --version     Print the program version\n"
+          "  -h, --help              Show this text\n"
+          "  -H, --human-readable    Output the time in a human readable format\n"
+          "  -v, --version           Print the program version\n"
           "\n"
           "Report bugs at: https://github.com/g0hl1n/xprintidle/issues\n"
           "Written by Magnus Henoch and others; see\n"
@@ -158,12 +159,13 @@ int main(int argc, char *argv[]) {
     if (!strcmp(argv[1], "-v") || !strcmp(argv[1], "--version")) {
       print_version();
       return EXIT_SUCCESS;
-    } else if (strcmp(argv[1], "-H") && strcmp(argv[1], "--human-readable")) {
+    } else if (!strcmp(argv[1], "-H") || !strcmp(argv[1], "--human-readable")) {
+      human = 1;
+    } else if (!strcmp(argv[1], "-h") || !strcmp(argv[1], "--help")) {
       print_usage(argv[0]);
       return EXIT_FAILURE;
     }
 
-    human = 1;
   }
 
   if (get_x_idletime(&idle) < 0) {
