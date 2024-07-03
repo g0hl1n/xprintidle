@@ -14,7 +14,8 @@ meson install -C build
 
 ### Dependencies ###
 
-You need the development files for the X11, Xext and Xss library.
+You need the development files for the X11, Xext and Xss libraries, and a
+C99-compliant compiler.
 
 ## Contributing ##
 

@@ -3,7 +3,7 @@ project('xprintidle',
   version : '0.2.5',
   license : 'GPL-2.0',
   default_options : [
-    'c_std=c89',
+    'c_std=c99',
     'warning_level=3',
     'optimization=3',
   ]
