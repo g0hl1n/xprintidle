@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unrelased]
 
+
+## [0.4.0] - 2026-11-20
+
 ### Added
 
 - Provide CHANGELOG.md [#19](https://github.com/g0hl1n/xprintidle/issues/19)
