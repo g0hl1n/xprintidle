@@ -12,8 +12,15 @@ jobs:
     steps:
       - name: Install deps
         run: sudo apt-get install libxss-dev
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v1
-      - uses: BSFishy/meson-build@v1.0.1
+      - name: Set up xprintidle repo
+        uses: actions/checkout@v7
+      - name: Set up python
+        uses: actions/setup-python@v7
         with:
-          action: build
+          python-version: '3.14'
+      - name: Set up meson
+        run: python -m pip install meson==1.12.1 ninja
+      - name: Configure xprintilde
+        run: meson setup --fatal-meson-warnings -Dwerror=true builddir
+      - name: Compile xprintilde
+        run: meson compile -C builddir/
