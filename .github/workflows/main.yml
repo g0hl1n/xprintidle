@@ -7,6 +7,16 @@ on:
     branches: [ master ]
 
 jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up xprintidle repo
+        uses: actions/checkout@v7
+      - name: Install clang-format
+        run: sudo apt-get install -y clang-format
+      - name: Check formatting
+        run: git ls-files '*.c' '*.h' | xargs clang-format --dry-run --Werror
+
   build:
     runs-on: ubuntu-latest
     steps:
