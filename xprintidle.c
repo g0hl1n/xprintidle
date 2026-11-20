@@ -44,19 +44,20 @@
 unsigned long workaroundCreepyXServer(Display *dpy, unsigned long idleTime);
 
 void print_usage(char *name) {
-  fprintf(stdout,
-          "usage: %s [OPTION]\n"
-          "Query the X server for the user's idle time\n"
-          "\n"
-          "Options:\n"
-          "  -h, --help              Show this text\n"
-          "  -H, --human-readable    Output the time in a human readable format\n"
-          "  -v, --version           Print the program version\n"
-          "\n"
-          "Report bugs at: https://github.com/g0hl1n/xprintidle/issues\n"
-          "Written by Magnus Henoch and others; see\n"
-          "https://github.com/g0hl1n/xprintidle/blob/master/AUTHORS\n",
-          name);
+  fprintf(
+      stdout,
+      "usage: %s [OPTION]\n"
+      "Query the X server for the user's idle time\n"
+      "\n"
+      "Options:\n"
+      "  -h, --help              Show this text\n"
+      "  -H, --human-readable    Output the time in a human readable format\n"
+      "  -v, --version           Print the program version\n"
+      "\n"
+      "Report bugs at: https://github.com/g0hl1n/xprintidle/issues\n"
+      "Written by Magnus Henoch and others; see\n"
+      "https://github.com/g0hl1n/xprintidle/blob/master/AUTHORS\n",
+      name);
 }
 
 void print_version(void) {
@@ -165,7 +166,6 @@ int main(int argc, char *argv[]) {
       print_usage(argv[0]);
       return EXIT_FAILURE;
     }
-
   }
 
   if (get_x_idletime(&idle) < 0) {

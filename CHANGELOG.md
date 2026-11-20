@@ -10,6 +10,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 - Provide CHANGELOG.md [#19](https://github.com/g0hl1n/xprintidle/issues/19)
 
+### Changed
+
+- Reformatted the projects source code using `clang-format`
+
 ### Fixed
 
 - Compilation warning in `main()` regarding format string representation of an uint64_t
