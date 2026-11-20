@@ -177,7 +177,7 @@ int main(int argc, char *argv[]) {
     return EXIT_SUCCESS;
   }
 
-  printf("%llu\n", idle);
+  printf("%lu\n", idle);
   return EXIT_SUCCESS;
 }
 
